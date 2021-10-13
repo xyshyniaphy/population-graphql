@@ -1,38 +1,22 @@
 import { gql } from 'apollo-server-micro'
 
 const schema = gql`
+  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
-type Country {
-  name: String
-  results: [Result]
-  mostRecent: Result
-}
+  # This "Book" type defines the queryable fields for every book in our data source.
+  type Population {
+    country: String
+    population: String
+  }
 
-type Result {
-  country: Country
-
-"""format date with date-fns. Help - https://date-fns.org/v2.11.0/docs/format"""
-  date (format: String): String
-  confirmed: Int
-  deaths: Int
-  recovered: Int
-  growthRate: Float
-}
-
-"""eq - equal to, gt - greater than, lt - less than"""
-input DateInput {
-  eq: String
-  gt: String
-  lt: String
-}
-
-type Query {
-  results(countries: [String], date: DateInput): [Result]
-  result (country: String!, date: String): Result
-
-  countries (names: [String]): [Country]
-  country (name: String): Country
-}
+  # The "Query" type is special: it lists all of the available queries that
+  # clients can execute, along with the return type for each. In this
+  # case, the "books" query returns an array of zero or more Books (defined above).
+  type Query {
+    populations: [Population]
+    population(country: String!): Population
+  }
 `
+
 
 export default schema
